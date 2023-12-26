@@ -64,8 +64,12 @@ jobs:
         with:
           name: VSCode-win32-x64
           path: D:\a\vscode-autobuilds\vscode-autobuilds\VSCode-win32-x64
-      - name: Upload Artifact x64
+      - name: Take a look at the system installer directory
+        run: dir .build\win32-x64\system-setup
+      - name: Take a look at the user installer directory
+        run: dir .build\win32-x64\user-setup
+      - name: Upload Artifact Installer System x64
         uses: actions/upload-artifact@v4.0.0
         with:
-          name: VSCode-win32-x64-Installer
-          path: D:\a\vscode-autobuilds\vscode-autobuilds\.build\win32-x64
+          name: VSCode-win32-x64-SysInstaller
+          path: D:\a\vscode-autobuilds\vscode-autobuilds\.build\win32-x64\system-setup\CodeOSSSetup-x64-1.86.0.exe
