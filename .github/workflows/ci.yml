@@ -59,18 +59,11 @@ jobs:
           7z.exe a .build/node_modules_cache/cache.7z -mx3 `@.build/node_modules_list.txt
       - name: Build for x64
         run: yarn gulp vscode-win32-x64
-      - name: Build for arm64
-        run: yarn gulp vscode-win32-arm64
       - name: Upload Artifact x64
         uses: actions/upload-artifact@v4.0.0
         with:
           name: VSCode-win32-x64
           path: VSCode-win32-x64
-      - name: Upload Artifact arm64
-        uses: actions/upload-artifact@v4.0.0
-        with:
-          name: VSCode-win32-arm64
-          path: VSCode-win32-arm64
 
   linux:
     name: Linux
