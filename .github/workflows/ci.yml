@@ -15,15 +15,12 @@ jobs:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
       - uses: actions/checkout@v4
-
       - uses: actions/setup-node@v3
         with:
           node-version-file: .nvmrc
-
       - uses: actions/setup-python@v4
         with:
-          python-version: "3.12.1"
-
+          python-version: "3.11.7"
       - name: Compute node modules cache key
         id: nodeModulesCacheKey
         run: echo "value=$(node build/azure-pipelines/common/computeNodeModulesCacheKey.js)" >> $GITHUB_OUTPUT
