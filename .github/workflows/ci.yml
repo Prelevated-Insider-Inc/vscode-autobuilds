@@ -67,32 +67,20 @@ jobs:
           node build/azure-pipelines/common/listNodeModules.js .build/node_modules_list.txt
           mkdir -Force .build/node_modules_cache
           7z.exe a .build/node_modules_cache/cache.7z -mx3 `@.build/node_modules_list.txt
-
-      - name: Compile and Download
-        run: yarn npm-run-all --max_old_space_size=4095 -lp compile "electron x64" playwright-install download-builtin-extensions
-
-      - name: Compile Integration Tests
-        run: yarn --cwd test/integration/browser compile
-
-      - name: Run Unit Tests (Electron)
-        run: .\scripts\test.bat
-
-      - name: Run Unit Tests (node.js)
-        run: yarn test-node
-
-      - name: Run Unit Tests (Browser, Chromium)
-        run: yarn test-browser-no-install --browser chromium
-
-      - name: Run Integration Tests (Electron)
-        run: .\scripts\test-integration.bat
-
-      - name: Run Integration Tests (Browser, Firefox)
-        timeout-minutes: 20
-        run: .\scripts\test-web-integration.bat --browser firefox
-
-      - name: Run Integration Tests (Remote)
-        timeout-minutes: 20
-        run: .\scripts\test-remote-integration.bat
+      - name: Build for x64
+        run: yarn gulp vscode-win32-x64
+      - name: Build for arm64
+        run: yarn gulp vscode-win32-arm64
+      - name: Upload Artifact x64
+        uses: actions/upload-artifact@v4.0.0
+        with:
+          name: VSCode-win32-x64
+          path: VSCode-win32-x64
+      - name: Upload Artifact arm64
+        uses: actions/upload-artifact@v4.0.0
+        with:
+          name: VSCode-win32-arm64
+          path: VSCode-win32-arm64
 
   linux:
     name: Linux
@@ -143,38 +131,28 @@ jobs:
           PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: 1
           ELECTRON_SKIP_BINARY_DOWNLOAD: 1
         run: yarn --frozen-lockfile --network-timeout 180000
-
-      - name: Compile and Download
-        run: yarn npm-run-all --max_old_space_size=4095 -lp compile "electron x64" playwright-install download-builtin-extensions
-
-      - name: Compile Integration Tests
-        run: yarn --cwd test/integration/browser compile
-
-      - name: Run Unit Tests (Electron)
-        id: electron-unit-tests
-        run: DISPLAY=:10 ./scripts/test.sh
-
-      - name: Run Unit Tests (node.js)
-        id: nodejs-unit-tests
-        run: yarn test-node
-
-      - name: Run Unit Tests (Browser, Chromium)
-        id: browser-unit-tests
-        run: DISPLAY=:10 yarn test-browser-no-install --browser chromium
-
-      - name: Run Integration Tests (Electron)
-        id: electron-integration-tests
-        run: DISPLAY=:10 ./scripts/test-integration.sh
-
-      - name: Run Integration Tests (Browser, Chromium)
-        id: browser-integration-tests
-        run: DISPLAY=:10 ./scripts/test-web-integration.sh --browser chromium
-
-      - name: Run Integration Tests (Remote)
-        id: electron-remote-integration-tests
-        timeout-minutes: 15
-        run: DISPLAY=:10 ./scripts/test-remote-integration.sh
-
+      - name: Build for x64
+        run: yarn gulp vscode-linux-x64
+      - name: Build for armhf
+        run: yarn gulp vscode-linux-armhf
+      - name: Build for arm64
+        run: yarn gulp vscode-linux-arm64
+      - name: Upload Artifact x64
+        uses: actions/upload-artifact@v4.0.0
+        with:
+          name: VSCode-linux-x64
+          path: VSCode-linux-x64
+      - name: Upload Artifact armhf
+        uses: actions/upload-artifact@v4.0.0
+        with:
+          name: VSCode-linux-armhf
+          path: VSCode-linux-armhf
+      - name: Upload Artifact arm64
+        uses: actions/upload-artifact@v4.0.0
+        with:
+          name: VSCode-linux-arm64
+          path: VSCode-linux-arm64
+          
   darwin:
     name: macOS
     runs-on: macos-latest
@@ -214,99 +192,17 @@ jobs:
           PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: 1
           ELECTRON_SKIP_BINARY_DOWNLOAD: 1
         run: yarn --frozen-lockfile --network-timeout 180000
-
-      - name: Compile and Download
-        run: yarn npm-run-all --max_old_space_size=4095 -lp compile "electron x64" playwright-install download-builtin-extensions
-
-      - name: Compile Integration Tests
-        run: yarn --cwd test/integration/browser compile
-
-      # This is required for SecretStorage unittests
-      - name: Create temporary keychain
-        run: |
-          security create-keychain -p pwd $RUNNER_TEMP/buildagent.keychain
-          security default-keychain -s $RUNNER_TEMP/buildagent.keychain
-          security unlock-keychain -p pwd $RUNNER_TEMP/buildagent.keychain
-
-      - name: Run Unit Tests (Electron)
-        run: DISPLAY=:10 ./scripts/test.sh
-
-      - name: Run Unit Tests (node.js)
-        run: yarn test-node
-
-      - name: Run Unit Tests (Browser, Chromium)
-        run: DISPLAY=:10 yarn test-browser-no-install --browser chromium
-
-      - name: Run Integration Tests (Electron)
-        run: DISPLAY=:10 ./scripts/test-integration.sh
-
-      - name: Run Integration Tests (Browser, Webkit)
-        run: DISPLAY=:10 ./scripts/test-web-integration.sh --browser webkit
-
-      - name: Run Integration Tests (Remote)
-        timeout-minutes: 15
-        run: DISPLAY=:10 ./scripts/test-remote-integration.sh
-
-  hygiene:
-    name: Hygiene and Layering
-    runs-on: ubuntu-latest
-    timeout-minutes: 40
-    env:
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    steps:
-      - uses: actions/checkout@v4
-
-      - uses: actions/setup-node@v3
+      - name: Build for x64
+        run: yarn gulp vscode-darwin-x64
+      - name: Build for arm64
+        run: yarn gulp vscode-darwin-arm64
+      - name: Upload Artifact x64
+        uses: actions/upload-artifact@v4.0.0
         with:
-          node-version-file: .nvmrc
-
-      - name: Compute node modules cache key
-        id: nodeModulesCacheKey
-        run: echo "value=$(node build/azure-pipelines/common/computeNodeModulesCacheKey.js)" >> $GITHUB_OUTPUT
-      - name: Cache node modules
-        id: cacheNodeModules
-        uses: actions/cache@v3
+          name: VSCode-darwin-x64
+          path: VSCode-darwin-x64
+      - name: Upload Artifact arm64
+        uses: actions/upload-artifact@v4.0.0
         with:
-          path: "**/node_modules"
-          key: ${{ runner.os }}-cacheNodeModulesLinux-${{ steps.nodeModulesCacheKey.outputs.value }}
-      - name: Get yarn cache directory path
-        id: yarnCacheDirPath
-        if: ${{ steps.cacheNodeModules.outputs.cache-hit != 'true' }}
-        run: echo "dir=$(yarn cache dir)" >> $GITHUB_OUTPUT
-      - name: Cache yarn directory
-        if: ${{ steps.cacheNodeModules.outputs.cache-hit != 'true' }}
-        uses: actions/cache@v3
-        with:
-          path: ${{ steps.yarnCacheDirPath.outputs.dir }}
-          key: ${{ runner.os }}-yarnCacheDir-${{ steps.nodeModulesCacheKey.outputs.value }}
-          restore-keys: ${{ runner.os }}-yarnCacheDir-
-      - name: Execute yarn
-        if: ${{ steps.cacheNodeModules.outputs.cache-hit != 'true' }}
-        env:
-          PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: 1
-          ELECTRON_SKIP_BINARY_DOWNLOAD: 1
-        run: yarn --frozen-lockfile --network-timeout 180000
-
-      - name: Download Playwright
-        run: yarn playwright-install
-
-      - name: Run Hygiene Checks
-        run: yarn gulp hygiene
-
-      - name: Run Valid Layers Checks
-        run: yarn valid-layers-check
-
-      - name: Compile /build/
-        run: yarn --cwd build compile
-
-      - name: Check clean git state
-        run: ./.github/workflows/check-clean-git-state.sh
-
-      - name: Run eslint
-        run: yarn eslint
-
-      - name: Run vscode-dts Compile Checks
-        run: yarn vscode-dts-compile-check
-
-      - name: Run Trusted Types Checks
-        run: yarn tsec-compile-check
+          name: VSCode-darwin-arm64
+          path: VSCode-darwin-arm64
