@@ -63,4 +63,9 @@ jobs:
         uses: actions/upload-artifact@v4.0.0
         with:
           name: VSCode-win32-x64
-          path: VSCode-win32-x64
+          path: D:\a\vscode-autobuilds\vscode-autobuilds\VSCode-win32-x64
+      - name: Upload Artifact x64
+        uses: actions/upload-artifact@v4.0.0
+        with:
+          name: VSCode-win32-x64-Installer
+          path: D:\a\vscode-autobuilds\vscode-autobuilds\.build\win32-x64
