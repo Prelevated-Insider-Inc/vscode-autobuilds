@@ -59,11 +59,11 @@ jobs:
           7z.exe a .build/node_modules_cache/cache.7z -mx3 `@.build/node_modules_list.txt
       - name: Build for x64
         run: yarn gulp vscode-win32-x64
-      - name: Upload Artifact x64 Portable ZIP
+      - name: Upload Artifact x64 OUT-BUILD Portable ZIP
         uses: actions/upload-artifact@v4.0.0
         with:
           name: VSCode-win32-x64
-          path: D:/a/vscode-autobuilds/vscode-autobuilds/out-vscode/
+          path: D:/a/vscode-autobuilds/vscode-autobuilds/out-build/
 #      - name: Take a look at the System Setup Directory
 #        run: |
 #          cmd /c 'dir D:\a\vscode-autobuilds\vscode-autobuilds'
