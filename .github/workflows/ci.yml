@@ -66,10 +66,7 @@ jobs:
           path: D:/a/vscode-autobuilds/vscode-autobuilds/VSCode-win32-x64/
       - name: Take a look at the System Setup Directory
         run: |
-          cmd /c 'cd D:\a\vscode-autobuilds\vscode-autobuilds\.build\win32-x64\system-setup && dir'
-      - name: Take a look at the System Setup Directory
-        run: |
-          cmd /c 'cd D:\a\vscode-autobuilds\vscode-autobuilds\.build\win32-x64\user-setup && dir'
+          cmd /c 'dir D:\a\vscode-autobuilds\vscode-autobuilds'
 #      - name: Upload Artifact x64 System Installer
 #        uses: actions/upload-artifact@v4.0.0
 #        with:
