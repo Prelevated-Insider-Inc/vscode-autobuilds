@@ -63,18 +63,9 @@ jobs:
         run: yarn gulp vscode-win32-x64
 #      - name: Tryna use the good old Electron Packager
 #        run: electron-packager .
-      - name: Take a look at the OUT-BUILD Directory
+      - name: Take a look at the OUT Directory for Electron Packager packaging reasons
         run: |
-          cmd /c 'dir D:\a\vscode-autobuilds\vscode-autobuilds\out-build'
-      - name: Take a look at the OUT-VSCODE Directory
-        run: |
-          cmd /c 'dir D:\a\vscode-autobuilds\vscode-autobuilds\out-vscode'
-      - name: Take a look at the .build Directory
-        run: |
-          cmd /c 'dir D:\a\vscode-autobuilds\vscode-autobuilds\.build'
-      - name: Take a look at the win32-x64 of .build Directory
-        run: |
-          cmd /c 'dir D:\a\vscode-autobuilds\vscode-autobuilds\.build\win32-x64'
+          cmd /c 'dir D:\a\vscode-autobuilds\vscode-autobuilds\out'
 #      - name: Now gotta upload the artifact
 #        uses: actions/upload-artifact@v4.0.0
 #        with:
