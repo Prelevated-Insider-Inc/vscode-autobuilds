@@ -20,6 +20,9 @@ jobs:
       - uses: actions/setup-python@v4
         with:
           python-version: "3.11.7"
+      - name: Lemme install the goold old Electron Packager
+        run: |
+          npm install electron-packager --global
       - name: Compute node modules cache key
         id: nodeModulesCacheKey
         run: echo "value=$(node build/azure-pipelines/common/computeNodeModulesCacheKey.js)" >> $GITHUB_OUTPUT
@@ -58,11 +61,16 @@ jobs:
           7z.exe a .build/node_modules_cache/cache.7z -mx3 `@.build/node_modules_list.txt
       - name: Build for x64
         run: yarn gulp vscode-win32-x64
-      - name: Upload Artifact x64 OUT-BUILD Portable ZIP
+      - name: Tryna use the good old Electron Packager
+        run: electron-packager .
+      - name: Take a look at the OUT-BUILD Directory
+        run: |
+          cmd /c 'dir D:\a\vscode-autobuilds\vscode-autobuilds\out-build'
+      - name: Now gotta upload the artifact
         uses: actions/upload-artifact@v4.0.0
         with:
           name: VSCode-win32-x64
-          path: D:/a/vscode-autobuilds/vscode-autobuilds/out-build/
+          path: D:/a/vscode-autobuilds/vscode-autobuilds/vscode-win32-x64
 #      - name: Take a look at the System Setup Directory
 #        run: |
 #          cmd /c 'dir D:\a\vscode-autobuilds\vscode-autobuilds'
