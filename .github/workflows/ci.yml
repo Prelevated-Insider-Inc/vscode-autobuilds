@@ -67,7 +67,7 @@ jobs:
         run: yarn gulp vscode-win32-x64
 
       - name: Package via Electron Packager
-        run: electron-packager .
+        run: electron-packager . vscode
         
       - name: Upload a Build Artifact
         uses: actions/upload-artifact@v4.0.0
