@@ -6,7 +6,7 @@
     "name": "Microsoft Corporation"
   },
   "license": "MIT",
-  "main": "./out-build",
+  "main": "./out-vscode",
   "private": true,
   "scripts": {
     "test": "echo Please run any of the test scripts from the scripts folder.",
