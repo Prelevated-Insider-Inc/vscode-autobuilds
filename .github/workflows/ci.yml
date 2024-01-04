@@ -62,7 +62,7 @@ jobs:
           7z.exe a .build/node_modules_cache/cache.7z -mx3 `@.build/node_modules_list.txt
 
       - name: Compile and Download
-        run: yarn run vscode-win32-x64
+        run: yarn gulp vscode-win32-x64
 
       - name: Package via Electron Packager
         run: electron-packager .
