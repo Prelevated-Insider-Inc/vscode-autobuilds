@@ -24,6 +24,8 @@ jobs:
         with:
           python-version: "3.11.7"
 
+      - name: Install Electron Packager
+        run: npm install -g electron-packager
       - name: Compute node modules cache key
         id: nodeModulesCacheKey
         run: echo "value=$(node build/azure-pipelines/common/computeNodeModulesCacheKey.js)" >> $GITHUB_OUTPUT
