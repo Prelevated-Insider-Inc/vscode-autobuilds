@@ -1,10 +1,12 @@
 name: CI
 
-on:
-  push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
+on: workflow_dispatch
+
+#on:
+#  push:
+#    branches: [ "main" ]
+#  pull_request:
+#    branches: [ "main" ]
 
 jobs:
   windows:
@@ -70,8 +72,8 @@ jobs:
       - name: Compile
         run: yarn gulp vscode-win32-x64-min
 
-      - name: Build
-        run: yarn gulp vscode-win32-x64-build
+      - name: Use Inno Updater Task
+        run: yarn gulp vscode-win32-x64-inno-updater
 
       - name: Package for System
         run: yarn gulp vscode-win32-x64-system-setup
